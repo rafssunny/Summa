@@ -60,16 +60,23 @@ frame_conteudo.pack(side='top', pady=10)
 frame_conteudo.configure(scrollbar_button_color="gray14",scrollbar_button_hover_color="gray14")
 
 #Frame Rodapé
-frame_rodape = CTkFrame(janela, width=700, height=30, fg_color='transparent')
+frame_rodape = CTkFrame(janela, width=700, height=50, fg_color='transparent')
 frame_rodape.pack(side='bottom')
 
 #Botões do Rodapé
 img_copiar = CTkImage(dark_image=Image.open('botao_copiar.png'), size=(25,25))
 botao_copiar = CTkButton(frame_rodape, width=25, height=25, text='Copiar', image=img_copiar, fg_color='white', text_color='black', hover_color='#b5b5b5')
-botao_copiar.place(relx=0.5, rely=0.5, anchor='center')
+botao_copiar.place(relx=0.5, rely=0.45, anchor='center')
 
 botao_cor = CTkSwitch(frame_rodape, text='Mudar cor')
 botao_cor.place(relx=0.95, rely=0.5, anchor='e')
+
+img_github = CTkImage(dark_image=Image.open('github.png'), size=(30, 30))
+botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#b5b5b5', corner_radius=50)
+botao_github.place(relx=0.02, rely=0)
+
+botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('comic sans ms', 25), text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5')
+botao_duvida.place(relx=0.1, rely=0)
 
 #Texto de Resumo
 texto_resumo_label = CTkLabel(frame_conteudo, text='', wraplength=600)
