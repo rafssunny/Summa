@@ -50,7 +50,9 @@ def entrada_usuario():
         #Checagem se é um ID do youtube ou não.
         try:
             youtube_id = prompt_usuario[32:]
-            yt = YouTubeTranscriptApi().fetch(youtube_id, languages=['pt', 'en'])
+            print(youtube_id)
+            ytt_api = YouTubeTranscriptApi()
+            yt = ytt_api.fetch(youtube_id, languages=['pt'])
         except:
             CTkMessagebox.CTkMessagebox(title='ERRO', message='Insira o link do vídeo corretamente.', icon='cancel', option_1='Ok.', bg_color='#5c0078', fg_color='#d6b2e0', text_color='#5c0078')
         else:
@@ -64,6 +66,10 @@ def entrada_usuario():
     janela.after(0, progress_bar.destroy)
     janela.after(0, progress_label.destroy)
     janela.after(0, gato_deitadolabel.destroy)
+
+def limpar_texto():
+    global texto_resumo_label
+    texto_resumo_label.destroy()
 
 # Configuração modelo da AI e KEY
 load_dotenv()
@@ -107,6 +113,10 @@ botao_github.bind("<Enter>", forcar_cursor_click)
 botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('Lexend', 25, 'bold'), text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=lambda: ajuda())
 botao_duvida.place(relx=0.18, rely=0.03)
 botao_duvida.bind('<Enter>', forcar_cursor_click)
+
+botao_lixeira = CTkButton(janela, text='Limpar texto', width=40, height=15, text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=lambda: limpar_texto)
+botao_lixeira.place(relx=0.437, rely=0.85)
+botao_lixeira.bind('<Enter>', forcar_cursor_click)
 
 #Logo
 gato_img = CTkImage(dark_image=Image.open('imgs/gato_icone.png'), size=(70,70))
