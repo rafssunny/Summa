@@ -6,11 +6,16 @@ from customtkinter import *
 from PIL import Image
 import webbrowser
 from youtube_transcript_api import YouTubeTranscriptApi
+import threading
 
 # Funções
+def forcar_cursor_click(event):
+    event.widget.configure(cursor="@click.cur")
+def forcar_cursor_tipo(event):
+    event.widget.configure(cursor="@tipo.cur")
 def abrirgithub():
     navegador = webbrowser.get()
-    navegador.open('https://github.com/rafssunny')
+    navegador.open('https://linktr.ee/rafssunny')
 def ajuda():
     CTkMessagebox.CTkMessagebox(title='Ajuda', message='• Utilize links como este: https://www.youtube.com/watch?v=UcLoXF8N_No\n\n• Não use links que incluam o tempo do vídeo no final do link ou que estejam em um formato diferente. Exemplos de links incorretos:\nhttps://www.youtube.com/watch?v=iD5y-oZOFAM&t=132s\nhttps://youtu.be/uenpi3MW8pQ?si=BXIxQAWy2LcuHGgi')
 def copiar(texto):
@@ -31,6 +36,14 @@ def entrada_usuario():
     texto_resumo = ''
     texto_resumo_label.destroy()
     prompt_usuario = botao_inserir.get()
+    progress_bar = CTkProgressBar(frame_conteudo, progress_color='#cb6ce6')
+    progress_label = CTkLabel(frame_conteudo, text='Gerando resumo...', font=('Lexent', 30, 'bold'), text_color='#5c0078')
+    progress_label.pack()
+    progress_bar.start()
+    progress_bar.pack()
+    gato_deitadoimg = CTkImage(dark_image=Image.open('imgs/gato_deitado.png'), size=(150,150))
+    gato_deitadolabel = CTkLabel(frame_conteudo, text='', image=gato_deitadoimg)
+    gato_deitadolabel.pack()
     if prompt_usuario.strip() == '':
         pass
     else:
@@ -39,7 +52,7 @@ def entrada_usuario():
             youtube_id = prompt_usuario[32:]
             yt = YouTubeTranscriptApi().fetch(youtube_id, languages=['pt', 'en'])
         except:
-            CTkMessagebox.CTkMessagebox(title='ERRO', message='Insira o link do vídeo corretamente.', icon='cancel', option_1='Ok.')
+            CTkMessagebox.CTkMessagebox(title='ERRO', message='Insira o link do vídeo corretamente.', icon='cancel', option_1='Ok.', bg_color='#5c0078', fg_color='#d6b2e0', text_color='#5c0078')
         else:
             for entry in yt:
                 texto_resumo += entry.text
@@ -48,6 +61,9 @@ def entrada_usuario():
             texto_resumo_label = CTkLabel(frame_conteudo, text=response.text, wraplength=300, text_color='#5c0078')
             texto_resumo_label.pack()
     botao_inserir.delete(0, END)
+    janela.after(0, progress_bar.destroy)
+    janela.after(0, progress_label.destroy)
+    janela.after(0, gato_deitadolabel.destroy)
 
 # Configuração modelo da AI e KEY
 load_dotenv()
@@ -57,6 +73,7 @@ model = genai.GenerativeModel('gemini-2.0-flash-exp')
 # Janela Principal
 janela = CTk(fg_color='#cb6ce6')
 janela.iconbitmap('icone.ico')
+janela.configure(cursor='@cursor.cur')
 janela.title('Summa')
 janela.resizable(False, False)
 centralizar(700,425, janela)
@@ -64,7 +81,8 @@ centralizar(700,425, janela)
 #Botão inserir conteúdo
 botao_inserir = CTkEntry(janela, placeholder_text='Cole seu link', width=400, height=40, fg_color='#5c0078', corner_radius=50, border_color='#5c0078')
 botao_inserir.place(relx=0.215, rely=0.18)
-janela.bind('<Return>', lambda event: entrada_usuario())
+janela.bind('<Return>', lambda event: threading.Thread(target=entrada_usuario).start())
+botao_inserir.bind('<Enter>', forcar_cursor_tipo)
 
 #Frame scrollavel com resumo
 frame_conteudo = CTkScrollableFrame(janela, width=365, height=0, corner_radius=15, fg_color='#d6b2e0')
@@ -76,20 +94,23 @@ frame_rodape = CTkFrame(janela, width=700, height=50, fg_color='transparent')
 frame_rodape.pack(side='bottom')
 
 #Botões do Rodapé
-img_copiar = CTkImage(dark_image=Image.open('botao_copiar.png'), size=(35,35))
-botao_copiar = CTkButton(frame_rodape, width=50, height=25, text='Copiar', image=img_copiar, fg_color='white', text_color='black', hover_color='#C2A5FF', command= lambda: copiar(response.text), corner_radius=20)
+img_copiar = CTkImage(dark_image=Image.open('imgs/botao_copiar.png'), size=(30,30))
+botao_copiar = CTkButton(frame_rodape, width=50, height=25, text='Copiar', image=img_copiar, fg_color='white', text_color='black', hover_color='#b5b5b5', command= lambda: copiar(response.text), corner_radius=20)
 botao_copiar.place(relx=0.02, rely=0)
+botao_copiar.bind('<Enter>', forcar_cursor_click)
 
-img_github = CTkImage(dark_image=Image.open('github.png'), size=(30, 30))
-botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#C2A5FF', corner_radius=50, command= lambda: abrirgithub())
+img_github = CTkImage(dark_image=Image.open('imgs/github.png'), size=(30, 30))
+botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#b5b5b5', corner_radius=50, command= lambda: abrirgithub())
 botao_github.place(relx=0.9, rely=0)
+botao_github.bind("<Enter>", forcar_cursor_click)
 
-botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('comic sans ms', 25), text_color='black', fg_color='white', corner_radius=10, hover_color='#C2A5FF', command=lambda: ajuda())
-botao_duvida.place(relx=0.18, rely=0)
+botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('Lexend', 25, 'bold'), text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=lambda: ajuda())
+botao_duvida.place(relx=0.18, rely=0.03)
+botao_duvida.bind('<Enter>', forcar_cursor_click)
 
 #Logo
-gato_img = CTkImage(dark_image=Image.open('gato_icone.png'), size=(70,70))
-gato_label = CTkLabel(janela, text='S U M M A', image=gato_img, compound='left', font=('Times New Roman ', 30), fg_color='transparent')
+gato_img = CTkImage(dark_image=Image.open('imgs/gato_icone.png'), size=(70,70))
+gato_label = CTkLabel(janela, text='S U M M A', image=gato_img, compound='left', font=('Lexend', 30, 'bold'), fg_color='transparent')
 gato_label.place(relx=0, rely=0)
 
 #Texto de Resumo
