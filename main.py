@@ -1,13 +1,11 @@
 # Importações de Librarys e APIs
 import CTkMessagebox
 import google.generativeai as genai
-import os
 from dotenv import load_dotenv
-from youtube_transcript_api import YouTubeTranscriptApi
 from customtkinter import *
 from PIL import Image
-from CTkMessagebox import ctkmessagebox
 import webbrowser
+from youtube_transcript_api import YouTubeTranscriptApi
 
 # Funções
 def abrirgithub():
@@ -39,7 +37,6 @@ def entrada_usuario():
         #Checagem se é um ID do youtube ou não.
         try:
             youtube_id = prompt_usuario[32:]
-            from youtube_transcript_api import YouTubeTranscriptApi
             yt = YouTubeTranscriptApi().fetch(youtube_id, languages=['pt', 'en'])
         except:
             CTkMessagebox.CTkMessagebox(title='ERRO', message='Insira o link do vídeo corretamente.', icon='cancel', option_1='Ok.')
