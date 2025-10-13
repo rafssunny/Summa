@@ -96,7 +96,7 @@ def entrada_usuario():
             ytt_api = YouTubeTranscriptApi()
             yt = ytt_api.fetch(youtube_id, languages=['pt'])
         except:
-            CTkMessagebox.CTkMessagebox(title='ERRO', message='Insira o link do vídeo corretamente.', icon='cancel', option_1='Ok.',bg_color='#0d0d0d', fg_color='#240046', text_color='white', button_color='#ff66c4', button_hover_color='#e055ad')
+            CTkMessagebox.CTkMessagebox(title='ERRO', message='1- Cheque se o link está escrito corretamente.\n2- Cheque se o vídeo tem transcrições disponíveis.\n3- Se o erro persistir, aguarde alguns instantes, o YouTube pode estar bloqueando os requests do IP.', icon='cancel', option_1='Ok.',bg_color='#0d0d0d', fg_color='#240046', text_color='white', button_color='#ff66c4', button_hover_color='#e055ad')
             gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo',compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
             gatoenter_label.pack(side='top')
         else:
