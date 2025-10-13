@@ -23,19 +23,40 @@ def forcar_cursor_tipo(event):
     """
     event.widget.configure(cursor="@tipo.cur")
 def abrirgithub():
+    """
+    Abrir meu linktree no navegador principal do usuário
+    :return:
+    """
     navegador = webbrowser.get()
     navegador.open('https://linktr.ee/rafssunny')
 def ajuda():
+    """
+    Abrir tela de ajuda no programa
+    :return:
+    """
     CTkMessagebox.CTkMessagebox(title='Ajuda', message='• Utilize links como este: https://www.youtube.com/watch?v=UcLoXF8N_No\n\n• Não use links que incluam o tempo do vídeo no final do link ou que estejam em um formato diferente. Exemplos de links incorretos:\nhttps://www.youtube.com/watch?v=iD5y-oZOFAM&t=132s\nhttps://youtu.be/uenpi3MW8pQ?si=BXIxQAWy2LcuHGgi',bg_color='#0d0d0d', fg_color='#240046', text_color='white', button_color='#ff66c4', button_hover_color='#e055ad')
 def copiar(texto):
+    """
+    Copiar resumo do texto para o copiar e colar do usuário
+    :param texto: texto dentro da label texto_resumo
+    :return:
+    """
     if not texto or str(texto).strip() == '':
-        return
+        CTkMessagebox.CTkMessagebox(title='ERRO', message='Nenhum texto disponível para copiar.', bg_color='#0d0d0d', fg_color='#240046', text_color='white', button_color='#ff66c4', button_hover_color='#e055ad', icon='cancel')
+        pass
     else:
         janela.clipboard_clear()
         janela.clipboard_append(texto)
         janela.update()
         CTkMessagebox.CTkMessagebox(title='Copiar texto', message='Copiado com sucesso.', icon='check', option_1='Ok.',bg_color='#0d0d0d', fg_color='#240046', text_color='white', button_color='#ff66c4', button_hover_color='#e055ad')
 def centralizar(largura, altura, janela):
+    """
+    Centralizar programa na tela do usuário
+    :param largura:
+    :param altura:
+    :param janela:
+    :return:
+    """
     largura_janela = largura
     altura_janela = altura
     largura_tela = janela.winfo_screenwidth()
@@ -44,19 +65,28 @@ def centralizar(largura, altura, janela):
     pos_y = int((altura_tela/2) - int(altura_janela/2))
     janela.geometry(f'{largura_janela}x{altura_janela}+{pos_x}+{pos_y}')
 def entrada_usuario():
+    """
+    Função que cria o resumo e mostra dentro da label principal
+    :return:
+    """
     global texto_resumo_label, frame_conteudo, texto_resumo, response, gatoenter_label, gatoenter_img
+    #Limpar labels
     texto_resumo = ''
-    texto_resumo_label.destroy()
+    texto_resumo_label.configure(text='')
     gatoenter_label.destroy()
+    # Pegar valor inserido pelo usuário
     prompt_usuario = botao_inserir.get()
+    # Barra de progresso
     progress_bar = CTkProgressBar(frame_conteudo, progress_color='#cb6ce6')
     progress_label = CTkLabel(frame_conteudo, text='Gerando resumo...', font=('Lexent', 30, 'bold'), text_color='#5c0078')
     progress_label.pack()
     progress_bar.start()
     progress_bar.pack()
+    # gato deitado enquanto o resumo é gerado
     gato_deitadoimg = CTkImage(dark_image=Image.open('imgs/gato_deitado.png'), size=(150,150))
     gato_deitadolabel = CTkLabel(frame_conteudo, text='', image=gato_deitadoimg)
     gato_deitadolabel.pack()
+    # checagem se prompt está vazio
     if prompt_usuario.strip() == '':
         pass
     else:
@@ -70,22 +100,27 @@ def entrada_usuario():
             gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo',compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
             gatoenter_label.pack(side='top')
         else:
+            # Caso seja um id guarda o texto da transcricao em uma variavel e depois realiza um resumo usando IA. Em seguida esse resumo é exposto na texto_resumo_label que havia sido apagada
             for entry in yt:
                 texto_resumo += entry.text
             prompt_usuario = texto_resumo
             response = model.generate_content(f'Faça um resumo sobre {prompt_usuario}. Na hora da criação do Resumo não utilize ** ou hashtags, Utilize SOMENTE setas ou pequenos pontos brancos flutuantes.')
             texto_resumo_label = CTkLabel(frame_conteudo, text=response.text, wraplength=300, text_color='#5c0078')
             texto_resumo_label.pack()
+    # Limpar botão de inserir, apagar barra de progresso, e imagem de gato deitado
     botao_inserir.delete(0, END)
     janela.after(0, progress_bar.destroy)
     janela.after(0, progress_label.destroy)
     janela.after(0, gato_deitadolabel.destroy)
 
 def limpar_texto():
+    # Limpa o texto dentro da label de resumo e também recria a imagem do gato apertando em um botão enter, checando se ela já existe
     global texto_resumo_label, response, gatoenter_label
-    gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo', compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
-    gatoenter_label.pack(side='top')
-    texto_resumo_label.destroy()
+    if not gatoenter_label:
+        gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo', compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
+        gatoenter_label.pack(side='top')
+    if texto_resumo_label:
+        texto_resumo_label.configure(text='')
 
 # Configuração modelo da AI e KEY
 load_dotenv()
@@ -126,6 +161,7 @@ botao_copiar = CTkButton(frame_rodape, width=50, height=25, text='Copiar', image
 botao_copiar.place(relx=0.02, rely=0)
 botao_copiar.bind('<Enter>', forcar_cursor_click)
 
+# Botão do GitHub
 img_github = CTkImage(dark_image=Image.open('imgs/github.png'), size=(30, 30))
 botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#b5b5b5', corner_radius=50, command= lambda: abrirgithub())
 botao_github.place(relx=0.9, rely=0)
