@@ -5,3 +5,8 @@
 Utilizando o poder da **inteligência artificial Gemini**, o Summa transforma longos conteúdos em **textos claros, objetivos e prontos para uso**, em apenas **alguns segundos**.
 
 ✨ Com apenas um clique, o resumo é criado e pode ser **copiado diretamente para a sua área de transferência**, oferecendo **praticidade e eficiência** no seu dia a dia.
+
+📝Atribuições:
+- https://www.flaticon.com/br/icones-gratis/ponteiro-do-mouse
+- https://www.flaticon.com/br/icone-gratis/tipo_3494695?term=ponteiro+do+mouse&page=1&position=45&origin=tag&related_id=3494695
+- https://www.flaticon.com/br/icones-gratis/ponteiro-do-mouse
