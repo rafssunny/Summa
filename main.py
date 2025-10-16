@@ -127,65 +127,63 @@ load_dotenv()
 client = genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
-if __name__ == "__main__":
-    # Janela Principal
-    janela = CTk(fg_color='#cb6ce6')
-    janela.iconbitmap('icone.ico')
-    janela.configure(cursor='@cursor.cur')
-    janela.title('Summa')
-    janela.resizable(False, False)
-    centralizar(700,425, janela)
+# Janela Principal
+janela = CTk(fg_color='#cb6ce6')
+janela.iconbitmap('icone.ico')
+janela.configure(cursor='@cursor.cur')
+janela.title('Summa')
+janela.resizable(False, False)
+centralizar(700,425, janela)
 
+#Botão inserir conteúdo
+botao_inserir = CTkEntry(janela, placeholder_text='Cole seu link', width=400, height=40, fg_color='#5c0078',corner_radius=50, border_color='#5c0078')
+botao_inserir.place(relx=0.215, rely=0.18)
+janela.bind('<Return>', lambda event: threading.Thread(target=entrada_usuario).start())
+botao_inserir.bind('<Enter>', forcar_cursor_tipo)
 
-    #Botão inserir conteúdo
-    botao_inserir = CTkEntry(janela, placeholder_text='Cole seu link', width=400, height=40, fg_color='#5c0078', corner_radius=50, border_color='#5c0078')
-    botao_inserir.place(relx=0.215, rely=0.18)
-    janela.bind('<Return>', lambda event: threading.Thread(target=entrada_usuario).start())
-    botao_inserir.bind('<Enter>', forcar_cursor_tipo)
+#Frame scrollavel com resumo
+frame_conteudo = CTkScrollableFrame(janela, width=365, height=0, corner_radius=15, fg_color='#d6b2e0')
+frame_conteudo.place(relx=0.5, rely=0.55, anchor='center')
+frame_conteudo.configure(scrollbar_button_color="#d6b2e0",scrollbar_button_hover_color="#d6b2e0")
 
-    #Frame scrollavel com resumo
-    frame_conteudo = CTkScrollableFrame(janela, width=365, height=0, corner_radius=15, fg_color='#d6b2e0')
-    frame_conteudo.place(relx=0.5, rely=0.55, anchor='center')
-    frame_conteudo.configure(scrollbar_button_color="#d6b2e0",scrollbar_button_hover_color="#d6b2e0")
+#Imagem e Label gato Pressionando Enter
+gatoenter_img = CTkImage(dark_image=Image.open('imgs/gato_enter.png'), size=(150, 150))
+gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo', compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
+gatoenter_label.pack(side='top')
 
-    #Imagem e Label gato Pressionando Enter
-    gatoenter_img = CTkImage(dark_image=Image.open('imgs/gato_enter.png'), size=(150, 150))
-    gatoenter_label = CTkLabel(frame_conteudo, text='Após colar seu link, pressione ENTER\n no teclado para gerar o resumo', compound='bottom', image=gatoenter_img, font=('Arial', 20), text_color='#5c0078')
-    gatoenter_label.pack(side='top')
+#Frame Rodapé
+frame_rodape = CTkFrame(janela, width=700, height=50, fg_color='transparent')
+frame_rodape.pack(side='bottom')
 
-    #Frame Rodapé
-    frame_rodape = CTkFrame(janela, width=700, height=50, fg_color='transparent')
-    frame_rodape.pack(side='bottom')
+#Botões do Rodapé
+img_copiar = CTkImage(dark_image=Image.open('imgs/botao_copiar.png'), size=(30,30))
+botao_copiar = CTkButton(frame_rodape, width=50, height=25, text='Copiar', image=img_copiar, fg_color='white', text_color='black', hover_color='#b5b5b5', corner_radius=20, command=lambda: copiar(texto_resumo_label.cget('text')))
+botao_copiar.place(relx=0.02, rely=0)
+botao_copiar.bind('<Enter>', forcar_cursor_click)
 
-    #Botões do Rodapé
-    img_copiar = CTkImage(dark_image=Image.open('imgs/botao_copiar.png'), size=(30,30))
-    botao_copiar = CTkButton(frame_rodape, width=50, height=25, text='Copiar', image=img_copiar, fg_color='white', text_color='black', hover_color='#b5b5b5', corner_radius=20, command=lambda: copiar(texto_resumo_label.cget('text')))
-    botao_copiar.place(relx=0.02, rely=0)
-    botao_copiar.bind('<Enter>', forcar_cursor_click)
+# Botão do GitHub
+img_github = CTkImage(dark_image=Image.open('imgs/github.png'), size=(30, 30))
+botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#b5b5b5', corner_radius=50, command= lambda: abrirgithub())
+botao_github.place(relx=0.9, rely=0)
+botao_github.bind("<Enter>", forcar_cursor_click)
 
-    # Botão do GitHub
-    img_github = CTkImage(dark_image=Image.open('imgs/github.png'), size=(30, 30))
-    botao_github = CTkButton(frame_rodape, width=15, height=15, image=img_github, text='', fg_color='white', hover_color='#b5b5b5', corner_radius=50, command= lambda: abrirgithub())
-    botao_github.place(relx=0.9, rely=0)
-    botao_github.bind("<Enter>", forcar_cursor_click)
+# Botão com messagebox explicando como usar programa
+botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('Lexend', 25, 'bold'), text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=lambda: ajuda())
+botao_duvida.place(relx=0.18, rely=0.03)
+botao_duvida.bind('<Enter>', forcar_cursor_click)
 
-    # Botão com messagebox explicando como usar programa
-    botao_duvida = CTkButton(frame_rodape, text='?', width=40, height=15, font=('Lexend', 25, 'bold'), text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=lambda: ajuda())
-    botao_duvida.place(relx=0.18, rely=0.03)
-    botao_duvida.bind('<Enter>', forcar_cursor_click)
+# Botão Limpar texto que apaga o texto resumo label
+botao_lixeira = CTkButton(janela, text='Limpar texto', width=40, height=15, text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=limpar_texto)
+botao_lixeira.place(relx=0.437, rely=0.85)
+botao_lixeira.bind('<Enter>', forcar_cursor_click)
 
-    # Botão Limpar texto que apaga o texto resumo label
-    botao_lixeira = CTkButton(janela, text='Limpar texto', width=40, height=15, text_color='black', fg_color='white', corner_radius=10, hover_color='#b5b5b5', command=limpar_texto)
-    botao_lixeira.place(relx=0.437, rely=0.85)
-    botao_lixeira.bind('<Enter>', forcar_cursor_click)
+# Logo do Programa no topo
+gato_img = CTkImage(dark_image=Image.open('imgs/gato_icone.png'), size=(70,70))
+gato_label = CTkLabel(janela, text='S U M M A', image=gato_img, compound='left', font=('Lexend', 30, 'bold'), fg_color='transparent')
+gato_label.place(relx=0, rely=0)
 
-    # Logo do Programa no topo
-    gato_img = CTkImage(dark_image=Image.open('imgs/gato_icone.png'), size=(70,70))
-    gato_label = CTkLabel(janela, text='S U M M A', image=gato_img, compound='left', font=('Lexend', 30, 'bold'), fg_color='transparent')
-    gato_label.place(relx=0, rely=0)
+# Label do Resumo dentro do Frame Conteúdo
+texto_resumo_label = CTkLabel(frame_conteudo, text='', wraplength=600)
+texto_resumo_label.pack()
 
-    # Label do Resumo dentro do Frame Conteúdo
-    texto_resumo_label = CTkLabel(frame_conteudo, text='', wraplength=600)
-    texto_resumo_label.pack()
-
-    janela.mainloop()
+janela.mainloop()
