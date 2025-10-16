@@ -6,9 +6,6 @@ Utilizando o poder da **inteligência artificial Gemini**, o Summa transforma lo
 
 ✨ Com apenas um clique, o resumo é criado e pode ser **copiado diretamente para a sua área de transferência**, oferecendo **praticidade e eficiência** no seu dia a dia.
 
-Baixe o programa clicando no botão abaixo:  
-[⬇️ **Baixar Summa**](https://drive.google.com/drive/folders/1JPMVZiV7p8M5-z-xH1LTbBwoN_Rbj5Qu?usp=sharing)
-(Após realizar o download da pasta, execute o arquivo **main.exe**)
 
 📝Atribuições:
 - https://www.flaticon.com/br/icones-gratis/ponteiro-do-mouse
