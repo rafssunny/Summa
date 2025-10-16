@@ -8,6 +8,7 @@ Utilizando o poder da **inteligência artificial Gemini**, o Summa transforma lo
 
 Baixe o programa clicando no botão abaixo:  
 [⬇️ **Baixar Summa**](https://drive.google.com/drive/folders/1JPMVZiV7p8M5-z-xH1LTbBwoN_Rbj5Qu?usp=sharing)
+
 📝Atribuições:
 - https://www.flaticon.com/br/icones-gratis/ponteiro-do-mouse
 - https://www.flaticon.com/br/icone-gratis/tipo_3494695?term=ponteiro+do+mouse&page=1&position=45&origin=tag&related_id=3494695
