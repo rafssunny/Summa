@@ -188,4 +188,4 @@ if __name__ == "__main__":
     texto_resumo_label = CTkLabel(frame_conteudo, text='', wraplength=600)
     texto_resumo_label.pack()
 
-janela.mainloop()
+    janela.mainloop()
