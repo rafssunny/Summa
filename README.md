@@ -15,6 +15,7 @@
 ```bash
 git clone https://github.com/rafssunny/Summa.git
 cd Summa
+pip install customtkinter pillow youtube-transcript-api google-generativeai python-dotenv
 python main.py
 ```
 ## 📌 Como Usar
